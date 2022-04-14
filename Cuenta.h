@@ -8,37 +8,91 @@
 using namespace std;
 
 struct Saldo {
-  float valor;
+  float dinero = 0;
   string tipoMoneda;
+  Saldo *siguiente;
+  Saldo() : dinero(0), siguiente(nullptr), tipoMoneda("PEN") {}
 };
 
 class CCuenta {
 private:
   int id;
+  string user;
+  string password;
   string name;
-  Saldo *saldo;
+
+  Saldo *listaSaldos;
+
+  Saldo *buscarPorTipoMoneda(string tipoMoneda) {
+    Saldo *actual = listaSaldos;
+    if (listaSaldos == nullptr) {
+      return nullptr;
+    }
+    while (actual != nullptr) {
+      if (actual->tipoMoneda == tipoMoneda) {
+        return actual;
+      }
+      actual = actual->siguiente;
+    }
+    return nullptr;
+  }
 
 public:
   CCuenta() {
-    int id = rand() % 1000;
+    int id = 0;
     string name = "undefined";
-    saldo = new Saldo();
-    saldo->tipoMoneda = "PEN";
+    listaSaldos = new Saldo();
   }
-  CCuenta(int id, string name, string tipoMoneda) {
-    this->name = name;
+  CCuenta(int id, string name, string user, string password) {
     this->id = id;
-    saldo = new Saldo();
-    for_each(tipoMoneda.begin(), tipoMoneda.end(),
-             [](char &c) { c = ::toupper(c); });
-    saldo->tipoMoneda = tipoMoneda;
+    this->name = name;
+    this->user = user;
+    this->password = password;
+    listaSaldos = new Saldo();
   }
   ~CCuenta() {}
 
   void setId(int id) { this->id = id; }
-  void setName(string name) { this->name = name; }
   int getId() { return this->id; }
+
+  void setName(string name) { this->name = name; }
   string getName() { return this->name; }
+
+  void setUser(string user) { this->user = user; }
+  string getUser() { return this->user; }
+
+  void setPassword(string password) { this->password = password; }
+  string getPassword() { return this->password; }
+
+  void addSaldo(float saldo, string tipoMoneda) {
+    Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
+    if (buscado == nullptr) {
+      Saldo *nuevoSaldo = new Saldo();
+      nuevoSaldo->tipoMoneda = tipoMoneda;
+      nuevoSaldo->dinero = saldo;
+      Saldo *actual = listaSaldos;
+      while (actual->siguiente != nullptr) {
+        actual = actual->siguiente;
+      }
+      actual->siguiente = nuevoSaldo;
+
+    } else {
+      buscado->dinero += saldo;
+    }
+  }
+
+  void imprimirSaldos() {
+    Saldo *actual = listaSaldos;
+    if (listaSaldos == nullptr) {
+      return;
+    }
+    cout << "MONEDA\tSALDO" << '\n';
+    while (actual != nullptr) {
+      cout << actual->tipoMoneda << ": \t" << actual->dinero << '\n';
+      actual = actual->siguiente;
+    }
+    cout << '\n';
+  }
 };
 
 #endif
