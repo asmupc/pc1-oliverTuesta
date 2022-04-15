@@ -22,6 +22,7 @@ private:
   string name;
 
   Saldo *listaSaldos;
+  Saldo *ultimo;
 
   Saldo *buscarPorTipoMoneda(string tipoMoneda) {
     Saldo *actual = listaSaldos;
@@ -42,13 +43,14 @@ public:
     int id = 0;
     string name = "undefined";
     listaSaldos = new Saldo();
+    ultimo = listaSaldos;
   }
-  CCuenta(int id, string name, string user, string password) {
-    this->id = id;
+  CCuenta(string name, string user, string password) {
     this->name = name;
     this->user = user;
     this->password = password;
     listaSaldos = new Saldo();
+    ultimo = listaSaldos;
   }
   ~CCuenta() {}
 
@@ -70,12 +72,8 @@ public:
       Saldo *nuevoSaldo = new Saldo();
       nuevoSaldo->tipoMoneda = tipoMoneda;
       nuevoSaldo->dinero = saldo;
-      Saldo *actual = listaSaldos;
-      while (actual->siguiente != nullptr) {
-        actual = actual->siguiente;
-      }
-      actual->siguiente = nuevoSaldo;
-
+      ultimo->siguiente = nuevoSaldo;
+      ultimo = nuevoSaldo;
     } else {
       buscado->dinero += saldo;
     }

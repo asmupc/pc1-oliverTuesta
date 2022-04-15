@@ -11,6 +11,9 @@ class CController {
 private:
   vector<CCuenta *> cuentas;
 
+public:
+  CController() {}
+  ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
     for (CCuenta *element : cuentas) {
       if (user == element->getUser()) {
@@ -20,9 +23,6 @@ private:
     return nullptr;
   }
 
-public:
-  CController() {}
-  ~CController() {}
   void registrarCuenta(CCuenta *cuenta) {
     cuenta->setId(cuentas.size() + FIRST_ID);
     cuentas.push_back(cuenta);
@@ -34,7 +34,8 @@ public:
 
   CCuenta *iniciarSesion(string user, string password) {
     CCuenta *cuentaObjetivo = buscarCuentaPorUsuario(user);
-    if (cuentaObjetivo->getPassword() == password) {
+    if (cuentaObjetivo != nullptr &&
+        cuentaObjetivo->getPassword() == password) {
       return cuentaObjetivo;
     }
     return nullptr;
