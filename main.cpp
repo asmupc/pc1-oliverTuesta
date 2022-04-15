@@ -66,13 +66,13 @@ void menuInisioSesion(CCuenta *cuenta) {
     cout << "0) Salir" << '\n';
     cout << "\nElija una opcion: ";
     cin >> opcion;
-    CCuenta *cuenta;
     string moneda;
     float monto;
     switch (opcion) {
     case 1:
-      cout << "Seleccione el tipo de moneda:";
-      cin >> moneda;
+      moneda = controller.seleccionarTipoMoneda();
+      if (moneda.empty())
+        break;
       cout << "Digite el monto: ";
       cin >> monto;
       cout << "monto ingresado: " << monto << '\n';

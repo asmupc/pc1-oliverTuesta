@@ -77,6 +77,8 @@ public:
     } else {
       buscado->dinero += saldo;
     }
+    cout << "Se depositado satisfactoriamente " << saldo << " en la cuenta "
+         << tipoMoneda << '\n';
   }
 
   void imprimirSaldos() {
