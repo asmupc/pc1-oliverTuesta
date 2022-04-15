@@ -83,17 +83,19 @@ public:
     }
   }
 
-  void imprimirSaldos() {
-    Saldo *actual = listaSaldos;
-    if (listaSaldos == nullptr) {
+  void imprimirLista(Saldo *saldo) {
+    if (saldo == nullptr) {
       return;
     }
-    cout << "MONEDA\tSALDO" << '\n';
-    while (actual != nullptr) {
-      cout << actual->tipoMoneda << ": \t";
-      printf("%.2f\n", actual->dinero);
-      actual = actual->siguiente;
-    }
+    cout << saldo->tipoMoneda << ": \t";
+    printf("%.2f\n", saldo->dinero);
+    imprimirLista(saldo->siguiente);
+  }
+
+  void imprimirSaldos() {
+    cout << "\nMONEDA\tSALDO"
+         << "\n";
+    imprimirLista(listaSaldos);
     cout << '\n';
   }
   Saldo *getListaSaldos() { return listaSaldos; }
