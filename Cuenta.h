@@ -21,6 +21,7 @@ private:
   string password;
   string name;
 
+  int cantidadSaldos;
   Saldo *listaSaldos;
   Saldo *ultimo;
 
@@ -44,6 +45,7 @@ public:
     string name = "undefined";
     listaSaldos = new Saldo();
     ultimo = listaSaldos;
+    cantidadSaldos = 1;
   }
   CCuenta(string name, string user, string password) {
     this->name = name;
@@ -51,6 +53,7 @@ public:
     this->password = password;
     listaSaldos = new Saldo();
     ultimo = listaSaldos;
+    cantidadSaldos = 1;
   }
   ~CCuenta() {}
 
@@ -74,11 +77,10 @@ public:
       nuevoSaldo->dinero = saldo;
       ultimo->siguiente = nuevoSaldo;
       ultimo = nuevoSaldo;
+      cantidadSaldos++;
     } else {
       buscado->dinero += saldo;
     }
-    cout << "Se depositado satisfactoriamente " << saldo << " en la cuenta "
-         << tipoMoneda << '\n';
   }
 
   void imprimirSaldos() {
@@ -88,11 +90,14 @@ public:
     }
     cout << "MONEDA\tSALDO" << '\n';
     while (actual != nullptr) {
-      cout << actual->tipoMoneda << ": \t" << actual->dinero << '\n';
+      cout << actual->tipoMoneda << ": \t";
+      printf("%.2f\n", actual->dinero);
       actual = actual->siguiente;
     }
     cout << '\n';
   }
+  Saldo *getListaSaldos() { return listaSaldos; }
+  int getCantidadSaldos() { return cantidadSaldos; }
 };
 
 #endif

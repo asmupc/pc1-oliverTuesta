@@ -76,7 +76,7 @@ void menuInisioSesion(CCuenta *cuenta) {
       cout << "Digite el monto: ";
       cin >> monto;
       cout << "monto ingresado: " << monto << '\n';
-      cuenta->addSaldo(monto, moneda);
+      controller.agregarSaldo(cuenta, moneda, monto);
       break;
     case 2:
       cuenta->imprimirSaldos();
@@ -112,11 +112,6 @@ void menu() {
 }
 
 int main(int argc, char *argv[]) {
-  CCuenta *oliver = new CCuenta("oliver", "oliver", "1234");
-  controller.registrarCuenta(oliver);
-  // oliver->imprimirSaldos();
-  // oliver->addSaldo(1, "USD");
-  // oliver->imprimirSaldos();
   menu();
   return 0;
 }

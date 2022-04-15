@@ -2,19 +2,33 @@
 #define _CONTROLLER_H_
 
 #include "Cuenta.h"
+#include "filemanager.h"
 #include <algorithm>
 #include <cstddef>
 #include <vector>
 
 #define FIRST_ID 100
 
+struct Moneda {
+  float val;
+  string nombre;
+  Moneda *siguiente;
+  Moneda() : val(1.0), siguiente(nullptr) {}
+};
+
 class CController {
 private:
+  string CUENTAS_FILE = "cuentas.ci";
+  CFilemanager filemanager;
   vector<CCuenta *> cuentas;
   string MONEDAS[3] = {"PEN", "USD", "EUR"};
 
+  void actualizarDatos() {
+    filemanager.actualizarUsuarios(CUENTAS_FILE, cuentas);
+  }
+
 public:
-  CController() {}
+  CController() { cuentas = filemanager.cargarCuentas(CUENTAS_FILE); }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
     for (CCuenta *element : cuentas) {
@@ -44,10 +58,18 @@ public:
   void registrarCuenta(CCuenta *cuenta) {
     cuenta->setId(cuentas.size() + FIRST_ID);
     cuentas.push_back(cuenta);
+    actualizarDatos();
   }
 
   void eliminarCuenta(CCuenta *cuenta) {
     cuentas.erase(cuentas.begin() + cuenta->getId() - FIRST_ID);
+    actualizarDatos();
+  }
+  void agregarSaldo(CCuenta *cuenta, string tipoMoneda, float saldo) {
+    cuenta->addSaldo(saldo, tipoMoneda);
+    actualizarDatos();
+    cout << "Se depositado satisfactoriamente " << saldo << " en la cuenta "
+         << tipoMoneda << '\n';
   }
 
   CCuenta *iniciarSesion(string user, string password) {
