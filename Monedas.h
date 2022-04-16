@@ -19,7 +19,6 @@ private:
   int cantidadMonedas;
   Moneda *listaMonedas;
   Moneda *ultimaMoneda;
-  string MONEDAS_FILE = "monedas.cs";
 
   void cambiarId(Moneda *moneda) {
     if (moneda == nullptr)
@@ -44,8 +43,6 @@ public:
     cantidadMonedas = 1;
   }
   ~CMonedas() {}
-
-  string getFileName() { return MONEDAS_FILE; }
 
   Moneda *buscarPorNombre(string nombre) {
     Moneda *aux = listaMonedas;

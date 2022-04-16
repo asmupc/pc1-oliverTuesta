@@ -44,7 +44,7 @@ void registrarUsuario() {
 CCuenta *iniciarSesion() {
 
   string user, password;
-  cout << "\n\t\tINISIAR SESION"
+  cout << "\n\t\tINICIAR SESION"
        << "\n\n";
   cout << "Ingrese su usuario: ";
   cin >> user;
@@ -61,8 +61,10 @@ void menuInisioSesion(CCuenta *cuenta) {
   int opcion = 1;
   do {
     cout << "\n\t\tBienvenido " << cuenta->getName() << "\n\n";
-    cout << "1) Ingresar monto" << '\n';
+    cout << "1) Depositar dinero" << '\n';
     cout << "2) Ver saldo" << '\n';
+    cout << "3) Cambio de divisas" << '\n';
+    cout << "4) Retirar dinero" << '\n';
     cout << "0) Salir" << '\n';
     cout << "\nElija una opcion: ";
     cin >> opcion;
@@ -81,6 +83,22 @@ void menuInisioSesion(CCuenta *cuenta) {
     case 2:
       cuenta->imprimirSaldos();
       break;
+    case 3:
+      controller.cambioDivisas(cuenta);
+    case 4:
+      float montoRetirar;
+      cuenta->imprimirSaldos();
+      int idMoneda;
+      cout << "Seleccione el tipo de moneda: ";
+      cin >> idMoneda;
+      Saldo *saldo = cuenta->buscarPorId(idMoneda);
+      if (saldo != nullptr) {
+        cout << "Digite el monto a retirar: ";
+        cin >> montoRetirar;
+        cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
+      } else {
+        cout << "No tiene dinero en esa cuenta" << '\n';
+      }
     }
   } while (opcion != 0);
 }

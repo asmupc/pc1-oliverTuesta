@@ -11,6 +11,7 @@
 using namespace std;
 class CMonedasFileManager {
 private:
+public:
   void escribirMoneda(string fileName, Moneda *moneda) {
     if (moneda == nullptr) {
       return;
@@ -23,28 +24,13 @@ private:
       std::cout << "error al guardar lista de monedas" << std::endl;
     }
   }
-
-public:
-  void actualizarClaseMonedas(string fileName, CMonedas *monedas) {
-    ofstream file;
-    file.open(fileName, ios::out);
-    if (file.is_open()) {
-      file << monedas->getFileName();
-      file.close();
-      escribirMoneda(monedas->getFileName(), monedas->getListaMonedas());
-      cout << "Se ha procesado la operacion correctamente" << '\n';
-    } else {
-      cout << "Error al actualizar monedas" << '\n';
-    }
-  }
   Moneda *cargarMonedas(string fileName) {
     ifstream file;
-    Moneda *m;
+    Moneda *m = nullptr;
     file.open(fileName, ios::out | ::ios::binary);
     if (file.is_open()) {
       file.seekg(0 * sizeof(&m), ios::beg);
       file.read((char *)&m, sizeof(Moneda));
-      cout << m->nombre << '\n';
     } else {
       std::cout << "error al guardar lista de monedas" << std::endl;
     }

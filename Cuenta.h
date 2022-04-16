@@ -8,10 +8,11 @@
 using namespace std;
 
 struct Saldo {
+  int id;
   float dinero = 0;
   string tipoMoneda;
   Saldo *siguiente;
-  Saldo() : dinero(0), siguiente(nullptr), tipoMoneda("PEN") {}
+  Saldo() : id(1), dinero(0), siguiente(nullptr), tipoMoneda("PEN") {}
 };
 
 class CCuenta {
@@ -69,17 +70,34 @@ public:
   void setPassword(string password) { this->password = password; }
   string getPassword() { return this->password; }
 
-  void addSaldo(float saldo, string tipoMoneda) {
+  void retirarSaldo(float saldo, string tipoMoneda) {
     Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
-    if (buscado == nullptr) {
-      Saldo *nuevoSaldo = new Saldo();
-      nuevoSaldo->tipoMoneda = tipoMoneda;
-      nuevoSaldo->dinero = saldo;
-      ultimo->siguiente = nuevoSaldo;
-      ultimo = nuevoSaldo;
-      cantidadSaldos++;
+    if (buscado == nullptr || buscado->dinero <= 0) {
+      cout << "No tiene saldo en la cuenta esa cuenta" << '\n';
     } else {
-      buscado->dinero += saldo;
+      if (buscado->dinero < saldo) {
+        cout << "Saldo insuficiente" << '\n';
+      } else
+        buscado->dinero -= saldo;
+    }
+  }
+
+  void addSaldo(float saldo, string tipoMoneda) {
+    if (saldo < 1) {
+      cout << "El monto minimo que se puede ingresar es 1" << '\n';
+    } else {
+      Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
+      if (buscado == nullptr) {
+        Saldo *nuevoSaldo = new Saldo();
+        nuevoSaldo->tipoMoneda = tipoMoneda;
+        nuevoSaldo->dinero = saldo;
+        nuevoSaldo->id = ultimo->id + 1;
+        ultimo->siguiente = nuevoSaldo;
+        ultimo = nuevoSaldo;
+        cantidadSaldos++;
+      } else {
+        buscado->dinero += saldo;
+      }
     }
   }
 
@@ -87,17 +105,30 @@ public:
     if (saldo == nullptr) {
       return;
     }
-    cout << saldo->tipoMoneda << ": \t";
+    cout << saldo->id << '\t';
+    cout << saldo->tipoMoneda << "\t";
     printf("%.2f\n", saldo->dinero);
     imprimirLista(saldo->siguiente);
   }
 
   void imprimirSaldos() {
-    cout << "\nMONEDA\tSALDO"
+    cout << "\nID\tMONEDA\tSALDO"
          << "\n";
     imprimirLista(listaSaldos);
     cout << '\n';
   }
+
+  Saldo *buscarPorId(int id) {
+    Saldo *aux = listaSaldos;
+    while (aux != nullptr) {
+      if (aux->id == id) {
+        return aux;
+      }
+      aux = aux->siguiente;
+    }
+    return nullptr;
+  }
+
   Saldo *getListaSaldos() { return listaSaldos; }
   int getCantidadSaldos() { return cantidadSaldos; }
 };

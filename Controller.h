@@ -13,8 +13,8 @@
 
 class CController {
 private:
-  string CUENTAS_FILE = "cuentas.ci";
-  string CLASE_MONEDAS_FILE = "clasemonedas.ci";
+  string CUENTAS_FILE = "cuentas.cs";
+  string MONEDAS_FILE = "monedas.cs";
   CCuentasFileManager filemanager;
   CMonedasFileManager monedasFM;
   vector<CCuenta *> cuentas;
@@ -28,19 +28,14 @@ public:
   CController() {
     cuentas = filemanager.cargarCuentas(CUENTAS_FILE);
     monedas = new CMonedas();
-    monedas->setListaMonedas(monedasFM.cargarMonedas(monedas->getFileName()));
     Moneda *sol = monedas->buscarPorNombre("PEN");
     Moneda *dolar = monedas->buscarPorNombre("USD");
     Moneda *euro = monedas->buscarPorNombre("EUR");
-    if (sol == nullptr) {
-      monedas->agregarMoneda("PEN", 1.0);
-    }
-    if (dolar == nullptr) {
-      monedas->agregarMoneda("USD", 3.71);
-    }
-    if (euro == nullptr) {
-      monedas->agregarMoneda("EUR", 4.03);
-    }
+    monedas->agregarMoneda("PEN", 1.0);
+    monedas->agregarMoneda("USD", 3.71);
+    monedas->agregarMoneda("EUR", 4.03);
+    monedasFM.escribirMoneda(MONEDAS_FILE, monedas->getListaMonedas());
+    monedas->setListaMonedas(monedasFM.cargarMonedas(MONEDAS_FILE));
   }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
@@ -90,6 +85,45 @@ public:
       return cuentaObjetivo;
     }
     return nullptr;
+  }
+
+  void cambioDivisas(CCuenta *cuenta) {
+    int opcion;
+    cuenta->imprimirSaldos();
+    cout << "Seleccione la moneda que desea cambiar: ";
+    cin >> opcion;
+    Saldo *saldo = cuenta->buscarPorId(opcion);
+    string monedaInicial = saldo->tipoMoneda;
+    if (saldo != nullptr && saldo->dinero > 0) {
+      monedas->imprimirMonedas();
+      cout << "Seleccione la nueva moneda: ";
+      cin >> opcion;
+      Moneda *monedaNueva = monedas->buscarPorId(opcion);
+      if (monedaNueva != nullptr) {
+        float valorInicial;
+        cout << "Digite el monto a convertir" << '\n';
+        cin >> valorInicial;
+        if (valorInicial >= 5 && valorInicial <= saldo->dinero) {
+          cuenta->retirarSaldo(valorInicial, monedaInicial);
+          // convirtiendo a soles
+          valorInicial *= monedas->getValorPorNombre(monedaInicial);
+          // convetir a la nueva moneda
+          float valorConvertido = valorInicial / monedaNueva->valor;
+          cuenta->addSaldo(valorConvertido, monedaNueva->nombre);
+          actualizarDatos();
+          cout << "Su cambio se ha realizado correctamente" << '\n';
+        } else {
+          cout << "No se pudo realizar el cambio,\nel monto minimo a convertir "
+                  "es 5"
+               << '\n';
+        }
+
+      } else {
+        cout << "No se ha encontrado esa moneda" << '\n';
+      }
+    } else {
+      cout << "No tiene dinero en esa cuenta" << '\n';
+    }
   }
 };
 
