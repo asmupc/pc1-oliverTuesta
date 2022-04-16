@@ -9,7 +9,7 @@
 #include <vector>
 
 using namespace std;
-class CFilemanager {
+class CCuentasFileManager {
 private:
 public:
   // template <class T>

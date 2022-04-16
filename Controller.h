@@ -2,33 +2,46 @@
 #define _CONTROLLER_H_
 
 #include "Cuenta.h"
-#include "filemanager.h"
+#include "Monedas.h"
+#include "cuentasfilemanager.h"
+#include "monedasfilemanager.h"
 #include <algorithm>
 #include <cstddef>
 #include <vector>
 
 #define FIRST_ID 100
 
-struct Moneda {
-  float val;
-  string nombre;
-  Moneda *siguiente;
-  Moneda() : val(1.0), siguiente(nullptr) {}
-};
-
 class CController {
 private:
   string CUENTAS_FILE = "cuentas.ci";
-  CFilemanager filemanager;
+  string CLASE_MONEDAS_FILE = "clasemonedas.ci";
+  CCuentasFileManager filemanager;
+  CMonedasFileManager monedasFM;
   vector<CCuenta *> cuentas;
-  string MONEDAS[3] = {"PEN", "USD", "EUR"};
+  CMonedas *monedas;
 
   void actualizarDatos() {
     filemanager.actualizarUsuarios(CUENTAS_FILE, cuentas);
   }
 
 public:
-  CController() { cuentas = filemanager.cargarCuentas(CUENTAS_FILE); }
+  CController() {
+    cuentas = filemanager.cargarCuentas(CUENTAS_FILE);
+    monedas = new CMonedas();
+    monedas->setListaMonedas(monedasFM.cargarMonedas(monedas->getFileName()));
+    Moneda *sol = monedas->buscarPorNombre("PEN");
+    Moneda *dolar = monedas->buscarPorNombre("USD");
+    Moneda *euro = monedas->buscarPorNombre("EUR");
+    if (sol == nullptr) {
+      monedas->agregarMoneda("PEN", 1.0);
+    }
+    if (dolar == nullptr) {
+      monedas->agregarMoneda("USD", 3.71);
+    }
+    if (euro == nullptr) {
+      monedas->agregarMoneda("EUR", 4.03);
+    }
+  }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
     for (CCuenta *element : cuentas) {
@@ -40,19 +53,17 @@ public:
   }
 
   string seleccionarTipoMoneda() {
-    cout << "\nOpcion\tMoneda" << '\n';
-    for (int i = 1; i <= MONEDAS->length(); i++) {
-      cout << i << ")\t" << MONEDAS[i - 1] << '\n';
-    }
+    monedas->imprimirMonedas();
     cout << "\n0)\tSalir" << '\n';
     int opcion;
     do {
       cout << "Seleccione una opcion: ";
       cin >> opcion;
-    } while (opcion < 0 || opcion > 3);
+    } while (opcion < 0 || opcion > monedas->getCantidadMonedas());
     if (opcion == 0)
       return "";
-    return MONEDAS[opcion - 1];
+    auto moneda = monedas->buscarPorId(opcion);
+    return moneda->nombre;
   }
 
   void registrarCuenta(CCuenta *cuenta) {
