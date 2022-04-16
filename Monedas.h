@@ -127,6 +127,7 @@ public:
     this->listaMonedas = listaMonedas;
     Moneda *aux = listaMonedas;
     while (aux->siguiente != nullptr) {
+      cout << aux->nombre << '\n';
       aux = aux->siguiente;
       cantidadMonedas++;
     }
