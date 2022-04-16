@@ -123,11 +123,11 @@ public:
   // guardar los valores en un archivo de texto
   void guardarMonedas() {}
   Moneda *getListaMonedas() { return listaMonedas; }
+
   void setListaMonedas(Moneda *listaMonedas) {
     this->listaMonedas = listaMonedas;
     Moneda *aux = listaMonedas;
     while (aux->siguiente != nullptr) {
-      cout << aux->nombre << '\n';
       aux = aux->siguiente;
       cantidadMonedas++;
     }
