@@ -91,6 +91,8 @@ public:
       switch (opcion) {
       case 1:
         Clear();
+        cout << "\t\tDEPOSITAR DINERO"
+             << "\n\n";
         moneda = controller.seleccionarTipoMoneda();
         if (moneda.empty())
           break;
