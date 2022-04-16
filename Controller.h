@@ -88,6 +88,8 @@ public:
   }
 
   void cambioDivisas(CCuenta *cuenta) {
+    cout << "\t\tCAMBIO DE DIVISAS"
+         << "\n\n";
     int opcion;
     cuenta->imprimirSaldos();
     cout << "Seleccione la moneda que desea cambiar: ";
@@ -101,9 +103,9 @@ public:
       Moneda *monedaNueva = monedas->buscarPorId(opcion);
       if (monedaNueva != nullptr) {
         float valorInicial;
-        cout << "Digite el monto a convertir" << '\n';
+        cout << "Digite el monto a convertir: ";
         cin >> valorInicial;
-        if (valorInicial >= 5 && valorInicial <= saldo->dinero) {
+        if (valorInicial > 0 && valorInicial <= saldo->dinero) {
           cuenta->retirarSaldo(valorInicial, monedaInicial);
           // convirtiendo a soles
           valorInicial *= monedas->getValorPorNombre(monedaInicial);

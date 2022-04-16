@@ -83,8 +83,8 @@ public:
   }
 
   void addSaldo(float saldo, string tipoMoneda) {
-    if (saldo < 1) {
-      cout << "El monto minimo que se puede ingresar es 1" << '\n';
+    if (saldo < 0) {
+      cout << "No se pudo realizar el deposito" << '\n';
     } else {
       Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
       if (buscado == nullptr) {

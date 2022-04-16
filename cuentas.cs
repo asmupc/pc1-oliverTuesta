@@ -5,11 +5,11 @@ olivert
 1234
 3
 PEN
-2111.3
+0.839996
 EUR
-21
+521
 USD
-4
+26.9542
 101
 manuel tuesta
 manu
