@@ -1,13 +1,15 @@
-# Project title
+# Cambio de divisas CAMBIO-SEGURO
 
-CAMBIO SEGURO
+## Lenguaje de programacion
 
-## Motivacion
+Este software esta hecho al 100% con el lenguaje de programacion c++, usando el
+copilador GNU compiler collection, el cual es compatible con la mayoria de
+sistemas operativos
+
+## Frase motivacional
 
 El arte desafia a la teconologia y la teconologia inspira el arte
 
-## Method and results
+## Contribuidores
 
-Este software esta hecho completamente con el lenguaje de programacion c++,
-usando el copilador GNU compiler collection, el cual es compatible con todos los
-sistemas operativos
+Oliver Tuesta Aria Ramirez Leonardo Taype
