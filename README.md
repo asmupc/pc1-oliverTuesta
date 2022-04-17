@@ -12,4 +12,8 @@ El arte desafia a la teconologia y la teconologia inspira el arte
 
 ## Contribuidores
 
-Oliver Tuesta Aria Ramirez Leonardo Taype
+ <ul>
+        <li>Oliver Tuesta</li>
+        <li>Arian Ramirez</li>
+        <li>Leonardo Taype</li>
+ </ul>
