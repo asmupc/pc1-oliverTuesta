@@ -16,14 +16,16 @@ class CController {
 private:
   string CUENTAS_FILE = "cuentas.cs";
   string MONEDAS_FILE = "monedas.cs";
-  CCuentasFileManager filemanager;
-  CMonedasFileManager monedasFM;
+  CCuentasFileManager *cuentasFM;
+  CMonedasFileManager *monedasFM;
   vector<CCuenta *> cuentas;
   CMonedas *monedas;
 
 public:
   CController() {
-    cuentas = filemanager.cargarCuentas(CUENTAS_FILE);
+    monedasFM = new CMonedasFileManager(MONEDAS_FILE);
+    cuentasFM = new CCuentasFileManager(CUENTAS_FILE);
+    cuentas = cuentasFM->cargarCuentas();
     monedas = new CMonedas();
     Moneda *sol = monedas->buscarPorNombre("PEN");
     Moneda *dolar = monedas->buscarPorNombre("USD");
@@ -31,8 +33,8 @@ public:
     monedas->agregarMoneda("PEN", 1.0);
     monedas->agregarMoneda("USD", 3.71);
     monedas->agregarMoneda("EUR", 4.03);
-    monedasFM.escribirMoneda(MONEDAS_FILE, monedas->getListaMonedas());
-    monedas->setListaMonedas(monedasFM.cargarMonedas(MONEDAS_FILE));
+    monedasFM->escribirMoneda(monedas->getListaMonedas());
+    monedas->setListaMonedas(monedasFM->cargarMonedas());
   }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
@@ -45,9 +47,7 @@ public:
     return buscada;
   }
 
-  void actualizarDatos() {
-    filemanager.actualizarUsuarios(CUENTAS_FILE, cuentas);
-  }
+  void actualizarDatos() { cuentasFM->actualizarUsuarios(cuentas); }
 
   string seleccionarTipoMoneda() {
     monedas->imprimirMonedas();

@@ -1,19 +1,18 @@
-#ifndef _FILEMANAGER_H_
-#define _FILEMANAGER_H_
+#ifndef _CUENTASFILEMANAGER_H_
+#define _CUENTASFILEMANAGER_H_
 
 #include "Cuenta.h"
-#include <cstddef>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
+#include "filemanager.h"
 
 using namespace std;
-class CCuentasFileManager {
+class CCuentasFileManager : public CFileManager {
 private:
 public:
+  CCuentasFileManager(string fileName) : CFileManager(fileName) {}
+  ~CCuentasFileManager() {}
+
   // template <class T>
-  void actualizarUsuarios(string fileName, vector<CCuenta *> cuentas) {
+  void actualizarUsuarios(vector<CCuenta *> cuentas) {
     ofstream file;
     file.open(fileName, ios::out);
     if (file.is_open()) {
@@ -38,7 +37,7 @@ public:
     }
   }
 
-  void escribirCuenta(string fileName, CCuenta *cuenta) {
+  void escribirCuenta(CCuenta *cuenta) {
     ofstream file;
     file.open(fileName, ios::app);
     if (file.is_open()) {
@@ -60,7 +59,7 @@ public:
     }
   }
 
-  vector<CCuenta *> cargarCuentas(string fileName) {
+  vector<CCuenta *> cargarCuentas() {
     vector<CCuenta *> cuentas;
     int cantidad;
     ifstream file;
@@ -99,61 +98,6 @@ public:
       }
     }
     return cuentas;
-  }
-
-  void leerArchivo(string fileName) {
-    ifstream file;
-    file.open(fileName, ios::in);
-    if (file.is_open()) {
-      int data;
-      while (!file.eof()) {
-        file >> data;
-        cout << data << " ";
-      }
-      file.close();
-    } else
-      cout << "Cannot open the file: " << fileName << '\n';
-    cout << '\n';
-  }
-
-  void leerLineas(string fileName) {
-    ifstream file;
-    file.open(fileName, ios::in);
-    string linea;
-    if (file.is_open()) {
-      while (!file.eof()) {
-        getline(file, linea);
-        cout << linea << '\n';
-      }
-    }
-  }
-
-  void leerCaracteres(string fileName) {
-    ifstream file;
-    file.open(fileName, ios::in);
-    if (file.is_open()) {
-      char data;
-      while (!file.eof()) {
-        file >> data;
-        cout << data << " ";
-      }
-      file.close();
-    } else
-      cout << "Cannot open the file: " << fileName << '\n';
-    cout << '\n';
-  }
-
-  // Agregar mas notas al archivo notas
-
-  template <class T> void escribir(string fileName, T dato) {
-    ofstream file;
-    file.open(fileName, ios::out);
-    if (file.is_open()) {
-      file << dato;
-      file.close();
-    } else {
-      cout << "Error al modificar cantidad de usuarios" << '\n';
-    }
   }
 };
 #endif

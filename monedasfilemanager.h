@@ -2,17 +2,15 @@
 #define _MONEDASFILEMANAGER_H_
 
 #include "Monedas.h"
-#include <cstddef>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
+#include "filemanager.h"
 
 using namespace std;
-class CMonedasFileManager {
+class CMonedasFileManager : public CFileManager {
 private:
 public:
-  void escribirMoneda(string fileName, Moneda *moneda) {
+  CMonedasFileManager(string fileName) : CFileManager(fileName) {}
+  ~CMonedasFileManager() {}
+  void escribirMoneda(Moneda *moneda) {
     if (moneda == nullptr) {
       return;
     }
@@ -24,7 +22,7 @@ public:
       std::cout << "error al guardar lista de monedas" << std::endl;
     }
   }
-  Moneda *cargarMonedas(string fileName) {
+  Moneda *cargarMonedas() {
     ifstream file;
     Moneda *m = nullptr;
     file.open(fileName, ios::out | ::ios::binary);
