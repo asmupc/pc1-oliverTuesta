@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstddef>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -26,18 +27,20 @@ private:
   Saldo *listaSaldos;
   Saldo *ultimo;
 
-  Saldo *buscarPorTipoMoneda(string tipoMoneda) {
-    Saldo *actual = listaSaldos;
-    if (listaSaldos == nullptr) {
-      return nullptr;
-    }
-    while (actual != nullptr) {
-      if (actual->tipoMoneda == tipoMoneda) {
-        return actual;
+  auto getBuscarPorTipoMoneda() {
+    return [&](string tipoMoneda) {
+      Saldo *actual = listaSaldos;
+      if (listaSaldos == nullptr) {
+        return listaSaldos;
       }
-      actual = actual->siguiente;
-    }
-    return nullptr;
+      while (actual != nullptr) {
+        if (actual->tipoMoneda == tipoMoneda) {
+          return actual;
+        }
+        actual = actual->siguiente;
+      }
+      return actual;
+    };
   }
 
 public:
@@ -72,7 +75,9 @@ public:
   string getPassword() { return this->password; }
 
   void retirarSaldo(float saldo, string tipoMoneda) {
-    Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
+
+    auto funcionBuscar = getBuscarPorTipoMoneda();
+    Saldo *buscado = funcionBuscar(tipoMoneda);
     if (buscado == nullptr || buscado->dinero <= 0) {
       cout << "No tiene saldo en la cuenta esa cuenta" << '\n';
     } else {
@@ -87,7 +92,8 @@ public:
     if (saldo < 0) {
       cout << "No se pudo realizar el deposito" << '\n';
     } else {
-      Saldo *buscado = buscarPorTipoMoneda(tipoMoneda);
+      auto funcionBuscar = getBuscarPorTipoMoneda();
+      Saldo *buscado = funcionBuscar(tipoMoneda);
       if (buscado == nullptr) {
         Saldo *nuevoSaldo = new Saldo();
         nuevoSaldo->tipoMoneda = tipoMoneda;
@@ -101,7 +107,6 @@ public:
       }
     }
   }
-
   void imprimirLista(Saldo *saldo) {
     if (saldo == nullptr) {
       return;
