@@ -111,18 +111,19 @@ public:
         break;
       case 4:
         Clear();
-        cout << "\t\tCAMBIO DE DIVISAS"
+        cout << "\t\tRETIROS"
              << "\n\n";
         float montoRetirar;
         cuenta->imprimirSaldos();
         int idMoneda;
         cout << "Seleccione el tipo de moneda: ";
         cin >> idMoneda;
-        Saldo *saldo = cuenta->buscarPorId(idMoneda);
+        Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), idMoneda);
         if (saldo != nullptr) {
           cout << "Digite el monto a retirar: ";
           cin >> montoRetirar;
           cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
+          controller.actualizarDatos();
         } else {
           cout << "No tiene dinero en esa cuenta" << '\n';
         }

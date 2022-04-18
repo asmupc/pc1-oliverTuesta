@@ -62,6 +62,7 @@ public:
   int getId() { return this->id; }
 
   void setName(string name) { this->name = name; }
+
   string getName() { return this->name; }
 
   void setUser(string user) { this->user = user; }
@@ -118,15 +119,11 @@ public:
     cout << '\n';
   }
 
-  Saldo *buscarPorId(int id) {
-    Saldo *aux = listaSaldos;
-    while (aux != nullptr) {
-      if (aux->id == id) {
-        return aux;
-      }
-      aux = aux->siguiente;
-    }
-    return nullptr;
+  template <typename T> Saldo *buscarPorId(Saldo *lista, T id) {
+    if (lista == nullptr || lista->id == id) {
+      return lista;
+    };
+    return buscarPorId(lista->siguiente, id);
   }
 
   Saldo *getListaSaldos() { return listaSaldos; }

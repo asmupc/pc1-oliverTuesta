@@ -12,6 +12,7 @@
 #define FIRST_ID 100
 
 class CController {
+
 private:
   string CUENTAS_FILE = "cuentas.cs";
   string MONEDAS_FILE = "monedas.cs";
@@ -19,10 +20,6 @@ private:
   CMonedasFileManager monedasFM;
   vector<CCuenta *> cuentas;
   CMonedas *monedas;
-
-  void actualizarDatos() {
-    filemanager.actualizarUsuarios(CUENTAS_FILE, cuentas);
-  }
 
 public:
   CController() {
@@ -39,12 +36,17 @@ public:
   }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
-    for (CCuenta *element : cuentas) {
-      if (user == element->getUser()) {
-        return element;
+    CCuenta *buscada = nullptr;
+    for_each(cuentas.begin(), cuentas.end(), [=, &buscada](CCuenta *cuenta) {
+      if (user == cuenta->getUser()) {
+        buscada = cuenta;
       }
-    }
-    return nullptr;
+    });
+    return buscada;
+  }
+
+  void actualizarDatos() {
+    filemanager.actualizarUsuarios(CUENTAS_FILE, cuentas);
   }
 
   string seleccionarTipoMoneda() {
@@ -94,7 +96,7 @@ public:
     cuenta->imprimirSaldos();
     cout << "Seleccione la moneda que desea cambiar: ";
     cin >> opcion;
-    Saldo *saldo = cuenta->buscarPorId(opcion);
+    Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), opcion);
     string monedaInicial = saldo->tipoMoneda;
     if (saldo != nullptr && saldo->dinero > 0) {
       monedas->imprimirMonedas();

@@ -54,7 +54,6 @@ public:
     }
     return nullptr;
   }
-
   float getValorPorNombreRecursivo(Moneda *listaMonedas, string nombre) {
     if (listaMonedas->nombre == nombre) {
       return listaMonedas->valor;
@@ -74,7 +73,7 @@ public:
     }
     return 1.0;
   }
-  Moneda *buscarPorId(int id) {
+  template <typename T> Moneda *buscarPorId(T id) {
     Moneda *aux = listaMonedas;
     while (aux != nullptr) {
       if (aux->id == id) {
@@ -84,7 +83,7 @@ public:
     }
     return nullptr;
   }
-  void agregarMoneda(string nombre, float valor) {
+  template <typename T> void agregarMoneda(string nombre, T valor) {
     Moneda *nuevaMoneda = buscarPorNombre(nombre);
     // si la moneda ya existe solo se actualiza el valor
     if (nuevaMoneda != nullptr) {
