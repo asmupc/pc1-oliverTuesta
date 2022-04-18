@@ -55,6 +55,15 @@ public:
     return nullptr;
   }
 
+  float getValorPorNombreRecursivo(Moneda *listaMonedas, string nombre) {
+    if (listaMonedas->nombre == nombre) {
+      return listaMonedas->valor;
+    } else if (listaMonedas == nullptr) {
+      return 1.0;
+    }
+    return getValorPorNombreRecursivo(listaMonedas->siguiente, nombre);
+  }
+
   float getValorPorNombre(string nombre) {
     Moneda *aux = listaMonedas;
     while (aux != nullptr) {

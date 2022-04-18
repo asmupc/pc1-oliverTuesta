@@ -108,7 +108,8 @@ public:
         if (valorInicial > 0 && valorInicial <= saldo->dinero) {
           cuenta->retirarSaldo(valorInicial, monedaInicial);
           // convirtiendo a soles
-          valorInicial *= monedas->getValorPorNombre(monedaInicial);
+          valorInicial *= monedas->getValorPorNombreRecursivo(
+              monedas->getListaMonedas(), monedaInicial);
           // convetir a la nueva moneda
           float valorConvertido = valorInicial / monedaNueva->valor;
           cuenta->addSaldo(valorConvertido, monedaNueva->nombre);
