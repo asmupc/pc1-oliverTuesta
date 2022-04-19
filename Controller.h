@@ -34,7 +34,7 @@ public:
     monedas->agregarMoneda("USD", 3.71);
     monedas->agregarMoneda("EUR", 4.03);
     monedasFM->escribirMoneda(monedas->getListaMonedas());
-    monedas->setListaMonedas(monedasFM->cargarMonedas());
+    // monedas->setListaMonedas(monedasFM->cargarMonedas());
   }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {

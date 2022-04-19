@@ -58,7 +58,7 @@ public:
 
   // Agregar mas notas al archivo notas
 
-  template <class T> void escribir(T dato) {
+  template <typename T> void escribir(T dato) {
     ofstream file;
     file.open(fileName, ios::out);
     if (file.is_open()) {
