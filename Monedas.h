@@ -141,6 +141,10 @@ public:
     }
     ultimaMoneda = aux;
   }
+  float getValorCambio(Moneda *monedaInicial, Moneda *nuevaMoneda) {
+    float valor = 1 / monedaInicial->valor;
+    return 0.1;
+  }
 };
 
 #endif

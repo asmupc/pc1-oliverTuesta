@@ -45,13 +45,13 @@ public:
     } while (usuarioExiste);
 
     bool passwordAccepted = false;
-    do {
+    while (!passwordAccepted && !usuarioExiste) {
       cout << "Ingrese su contrasena: ";
       cin >> password;
       passwordAccepted = password.size() >= 4;
       if (!passwordAccepted)
         cout << "Su contrasena debe tener mas de 4 digitos" << '\n';
-    } while (!passwordAccepted);
+    }
 
     CCuenta *nuevaCuenta = new CCuenta(name, user, password);
     controller.registrarCuenta(nuevaCuenta);
@@ -74,6 +74,25 @@ public:
     return nullptr;
   }
 
+  void retirarDinero(CCuenta *cuenta) {
+    cout << "\t\tRETIROS"
+         << "\n\n";
+    float montoRetirar;
+    cuenta->imprimirSaldos();
+    int idMoneda;
+    cout << "Seleccione el tipo de moneda: ";
+    cin >> idMoneda;
+    Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), idMoneda);
+    if (saldo != nullptr) {
+      cout << "Digite el monto a retirar: ";
+      cin >> montoRetirar;
+      cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
+      controller.actualizarDatos();
+    } else {
+      cout << "No tiene dinero en esa cuenta" << '\n';
+    }
+  }
+
   void menuInisioSesion(CCuenta *cuenta) {
 
     int opcion = 1;
@@ -83,6 +102,9 @@ public:
       cout << "2) Ver saldo" << '\n';
       cout << "3) Cambio de divisas" << '\n';
       cout << "4) Retirar dinero" << '\n';
+      cout << "5) Historial" << '\n';
+      cout << "6) Comentarios" << '\n';
+      cout << "\n7) Eliminar cuenta" << '\n';
       cout << "0) Salir" << '\n';
       cout << "\nElija una opcion: ";
       cin >> opcion;
@@ -110,23 +132,23 @@ public:
         controller.cambioDivisas(cuenta);
         break;
       case 4:
+        retirarDinero(cuenta);
+        break;
+      case 5:
+        break;
+      case 7:
         Clear();
-        cout << "\t\tRETIROS"
-             << "\n\n";
-        float montoRetirar;
-        cuenta->imprimirSaldos();
-        int idMoneda;
-        cout << "Seleccione el tipo de moneda: ";
-        cin >> idMoneda;
-        Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), idMoneda);
-        if (saldo != nullptr) {
-          cout << "Digite el monto a retirar: ";
-          cin >> montoRetirar;
-          cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
-          controller.actualizarDatos();
-        } else {
-          cout << "No tiene dinero en esa cuenta" << '\n';
+        cout << "Esta seguro que desea eliminar su cuenta?" << '\n';
+        cout << "Su dinero sera retirado y todos sus datos eliminados" << '\n';
+        cout << "(si | no)" << '\n';
+        string respuesta;
+        cin >> respuesta;
+        if (respuesta == "Si" || respuesta == "si" || respuesta == "SI") {
+          controller.eliminarCuenta(cuenta);
+          opcion = 0;
         }
+
+        break;
       }
     } while (opcion != 0);
   }

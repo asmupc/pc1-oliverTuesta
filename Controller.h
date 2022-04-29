@@ -6,6 +6,7 @@
 #include "cuentasfilemanager.h"
 #include "monedasfilemanager.h"
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <vector>
 
@@ -31,7 +32,7 @@ public:
     Moneda *dolar = monedas->buscarPorNombre("USD");
     Moneda *euro = monedas->buscarPorNombre("EUR");
     monedas->agregarMoneda("PEN", 1.0);
-    monedas->agregarMoneda("USD", 3.71);
+    monedas->agregarMoneda("USD", 3.83);
     monedas->agregarMoneda("EUR", 4.03);
     monedasFM->escribirMoneda(monedas->getListaMonedas());
     // monedas->setListaMonedas(monedasFM->cargarMonedas());
@@ -72,6 +73,7 @@ public:
   void eliminarCuenta(CCuenta *cuenta) {
     cuentas.erase(cuentas.begin() + cuenta->getId() - FIRST_ID);
     actualizarDatos();
+    cout << "Su cuenta ha sido eliminada correctamente" << '\n';
   }
   void agregarSaldo(CCuenta *cuenta, string tipoMoneda, float saldo) {
     cuenta->addSaldo(saldo, tipoMoneda);
@@ -110,10 +112,14 @@ public:
         if (valorInicial > 0 && valorInicial <= saldo->dinero) {
           cuenta->retirarSaldo(valorInicial, monedaInicial);
           // convirtiendo a soles
-          valorInicial *= monedas->getValorPorNombreRecursivo(
-              monedas->getListaMonedas(), monedaInicial);
+          float valorInicialSoles =
+              valorInicial * monedas->getValorPorNombreRecursivo(
+                                 monedas->getListaMonedas(), monedaInicial);
           // convetir a la nueva moneda
-          float valorConvertido = valorInicial / monedaNueva->valor;
+          // los * 100 y / 100 son para redondear a dos cifras de cimales
+          float valorConvertido =
+              (int)((valorInicialSoles / monedaNueva->valor) * 100) / 100.0;
+          cout << (valorInicialSoles / monedaNueva->valor) << '\n';
           cuenta->addSaldo(valorConvertido, monedaNueva->nombre);
           actualizarDatos();
           cout << "Su cambio se ha realizado correctamente" << '\n';

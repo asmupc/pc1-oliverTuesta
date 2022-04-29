@@ -3,8 +3,10 @@
 oliver tuesta
 oliver
 1234
-2
+3
 PEN
 0
 USD
-0.0431266
+26.9931
+EUR
+0
