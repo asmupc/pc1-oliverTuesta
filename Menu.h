@@ -135,6 +135,8 @@ public:
         retirarDinero(cuenta);
         break;
       case 5:
+        Clear();
+        controller.mostrarHistorial(cuenta);
         break;
       case 7:
         Clear();

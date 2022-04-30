@@ -88,9 +88,10 @@ public:
     }
   }
 
-  void addSaldo(float saldo, string tipoMoneda) {
-    if (saldo < 0) {
+  bool addSaldo(float saldo, string tipoMoneda) {
+    if (saldo <= 0) {
       cout << "No se pudo realizar el deposito" << '\n';
+      return false;
     } else {
       auto funcionBuscar = getBuscarPorTipoMoneda();
       Saldo *buscado = funcionBuscar(tipoMoneda);
@@ -106,6 +107,7 @@ public:
         buscado->dinero += saldo;
       }
     }
+    return true;
   }
   void imprimirLista(Saldo *saldo) {
     if (saldo == nullptr) {

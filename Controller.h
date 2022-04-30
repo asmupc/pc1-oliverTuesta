@@ -4,10 +4,13 @@
 #include "Cuenta.h"
 #include "Monedas.h"
 #include "cuentasfilemanager.h"
+#include "filemanager.h"
 #include "monedasfilemanager.h"
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <ctime>
+#include <string>
 #include <vector>
 
 #define FIRST_ID 100
@@ -17,9 +20,11 @@ class CController {
 private:
   string CUENTAS_FILE = "cuentas.cs";
   string MONEDAS_FILE = "monedas.cs";
+  CFileManager *fm;
   CCuentasFileManager *cuentasFM;
   CMonedasFileManager *monedasFM;
   vector<CCuenta *> cuentas;
+
   CMonedas *monedas;
 
 public:
@@ -67,19 +72,27 @@ public:
   void registrarCuenta(CCuenta *cuenta) {
     cuenta->setId(cuentas.size() + FIRST_ID);
     cuentas.push_back(cuenta);
+    fm->escribir(cuenta->getUser() + ".cs",
+                 "Se ha creado la cuenta a nombre de " + cuenta->getName());
     actualizarDatos();
   }
 
   void eliminarCuenta(CCuenta *cuenta) {
     cuentas.erase(cuentas.begin() + cuenta->getId() - FIRST_ID);
     actualizarDatos();
+    fm->eliminarArchivo(cuenta->getUser() + ".cs");
     cout << "Su cuenta ha sido eliminada correctamente" << '\n';
   }
   void agregarSaldo(CCuenta *cuenta, string tipoMoneda, float saldo) {
-    cuenta->addSaldo(saldo, tipoMoneda);
-    actualizarDatos();
-    cout << "Se depositado satisfactoriamente " << saldo << " en la cuenta "
-         << tipoMoneda << '\n';
+    saldo = (int)((saldo)*100) / 100.0;
+    if (cuenta->addSaldo(saldo, tipoMoneda)) {
+      actualizarDatos();
+      cout << "Se depositado satisfactoriamente " << saldo << " en la cuenta "
+           << tipoMoneda << '\n';
+      string operacion =
+          "Se ha agregado " + to_string(saldo) + " a la cuenta " + tipoMoneda;
+      fm->escribir(cuenta->getUser() + ".cs", operacion);
+    }
   }
 
   CCuenta *iniciarSesion(string user, string password) {
@@ -119,10 +132,15 @@ public:
           // los * 100 y / 100 son para redondear a dos cifras de cimales
           float valorConvertido =
               (int)((valorInicialSoles / monedaNueva->valor) * 100) / 100.0;
-          cout << (valorInicialSoles / monedaNueva->valor) << '\n';
           cuenta->addSaldo(valorConvertido, monedaNueva->nombre);
           actualizarDatos();
           cout << "Su cambio se ha realizado correctamente" << '\n';
+
+          string operacion =
+              "Se ha cambiado" + to_string(valorInicial) + " " + monedaInicial +
+              " a " + to_string(valorConvertido) + " " + monedaNueva->nombre;
+          fm->escribir(cuenta->getUser() + ".cs", operacion);
+
         } else {
           cout << "No se pudo realizar el cambio,\nel monto minimo a convertir "
                   "es 5"
@@ -135,6 +153,13 @@ public:
     } else {
       cout << "No tiene dinero en esa cuenta" << '\n';
     }
+  }
+  void mostrarHistorial(CCuenta *cuenta) {
+    string fileName = cuenta->getUser() + ".cs";
+    cout << "\n\tFECHA\t\tOPERACION"
+         << "\n\n";
+    string history = fm->leerArchivo(fileName);
+    cout << '\n';
   }
 };
 
