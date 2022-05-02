@@ -165,6 +165,7 @@ public:
     cout << "\n\tFECHA\t\tOPERACION"
          << "\n\n";
     string history = fm->leerArchivo(fileName);
+    cout << history << '\n';
     cout << '\n';
   }
   void agregarComentario(string autor, string texto) {
