@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <ctime>
 #include <string>
 #include <vector>
@@ -171,6 +172,25 @@ public:
     comentarios->escribirComentarios(fm);
   }
   void imprimirComentarios() { comentarios->imprimirPila(fm); }
+
+  void ordenarCuentas() {
+    for (int i = 0; i < cuentas.size() - 1; i++) {
+      int menor;
+      for (int j = i + 1; j < cuentas.size(); j++) {
+        menor = i;
+        if (cuentas[j]->getName()[0] < cuentas[menor]->getName()[0]) {
+          menor = j;
+        }
+      }
+      // swap
+      CCuenta *aux = cuentas[menor];
+      cuentas[menor] = cuentas[i];
+      cuentas[i] = aux;
+    }
+    for (auto i : cuentas) {
+      cout << i->getName() << '\n';
+    }
+  }
 };
 
 #endif

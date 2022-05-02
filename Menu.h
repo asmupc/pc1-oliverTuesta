@@ -117,6 +117,7 @@ public:
       cout << "6) Escribir Comentarios" << '\n';
       cout << "7) Ver Comentarios" << '\n';
       cout << "\n8) Eliminar cuenta" << '\n';
+      cout << "\n9) Ordenar Cuentas" << '\n';
       cout << "0) Salir" << '\n';
       cout << "\nElija una opcion: ";
       cin >> opcion;
@@ -158,6 +159,10 @@ public:
         Clear();
         controller.imprimirComentarios();
         break;
+      case 9:
+        Clear();
+        controller.ordenarCuentas();
+        break;
       case 8:
         Clear();
         cout << "Esta seguro que desea eliminar su cuenta?" << '\n';
@@ -169,7 +174,6 @@ public:
           controller.eliminarCuenta(cuenta);
           opcion = 0;
         }
-
         break;
       }
     } while (opcion != 0);

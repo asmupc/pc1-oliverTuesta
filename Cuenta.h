@@ -89,7 +89,7 @@ public:
   }
 
   bool addSaldo(float saldo, string tipoMoneda) {
-    if (saldo <= 0) {
+    if (saldo < 0) {
       cout << "No se pudo realizar el deposito" << '\n';
       return false;
     } else {
