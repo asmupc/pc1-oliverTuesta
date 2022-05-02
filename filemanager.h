@@ -18,11 +18,12 @@ public:
   string leerArchivo(string fileName) {
     ifstream file;
     file.open(fileName, ios::in);
-    string text;
+    string text = "";
+    string line;
     if (file.is_open()) {
       while (!file.eof()) {
-        getline(file, text);
-        cout << text << '\n';
+        getline(file, line);
+        text += line + '\n';
       }
     }
     return text;
@@ -79,6 +80,24 @@ public:
       file.close();
     }
   }
+
+  void borrar(string fileName) {
+
+    ofstream file;
+    file.open(fileName, ios::out);
+    if (file.is_open())
+      file << " ";
+  }
+
+  void escribirAntes(string fileName, string texto) {
+    ofstream file;
+    file.open(fileName, ios::out);
+    if (file.is_open()) {
+      file << texto;
+      file.close();
+    }
+  }
+
   template <typename T> void escribir(string fileName, T dato) {
     escribirFecha(fileName);
     ofstream file;

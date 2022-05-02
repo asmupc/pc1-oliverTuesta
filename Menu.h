@@ -93,6 +93,17 @@ public:
     }
   }
 
+  void escribirComentario(CCuenta *cuenta) {
+    cout << "\t\tESCRIBE UN COMENTARIO" << '\n';
+    string texto;
+    // while (texto.size() < 1) {
+    // getline(cin, texto);
+    //}
+    cin >> texto;
+    controller.agregarComentario(cuenta->getName(), texto);
+    cout << "\nGracias por dejar un comentario\n" << '\n';
+  }
+
   void menuInisioSesion(CCuenta *cuenta) {
 
     int opcion = 1;
@@ -103,8 +114,9 @@ public:
       cout << "3) Cambio de divisas" << '\n';
       cout << "4) Retirar dinero" << '\n';
       cout << "5) Historial" << '\n';
-      cout << "6) Comentarios" << '\n';
-      cout << "\n7) Eliminar cuenta" << '\n';
+      cout << "6) Escribir Comentarios" << '\n';
+      cout << "7) Ver Comentarios" << '\n';
+      cout << "\n8) Eliminar cuenta" << '\n';
       cout << "0) Salir" << '\n';
       cout << "\nElija una opcion: ";
       cin >> opcion;
@@ -138,7 +150,15 @@ public:
         Clear();
         controller.mostrarHistorial(cuenta);
         break;
+      case 6:
+        Clear();
+        escribirComentario(cuenta);
+        break;
       case 7:
+        Clear();
+        controller.imprimirComentarios();
+        break;
+      case 8:
         Clear();
         cout << "Esta seguro que desea eliminar su cuenta?" << '\n';
         cout << "Su dinero sera retirado y todos sus datos eliminados" << '\n';

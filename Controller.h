@@ -1,6 +1,7 @@
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
+#include "Comentario.h"
 #include "Cuenta.h"
 #include "Monedas.h"
 #include "cuentasfilemanager.h"
@@ -27,8 +28,11 @@ private:
 
   CMonedas *monedas;
 
+  CComentarios *comentarios;
+
 public:
   CController() {
+
     monedasFM = new CMonedasFileManager(MONEDAS_FILE);
     cuentasFM = new CCuentasFileManager(CUENTAS_FILE);
     cuentas = cuentasFM->cargarCuentas();
@@ -41,6 +45,7 @@ public:
     monedas->agregarMoneda("EUR", 4.03);
     monedasFM->escribirMoneda(monedas->getListaMonedas());
     // monedas->setListaMonedas(monedasFM->cargarMonedas());
+    comentarios = new CComentarios();
   }
   ~CController() {}
   CCuenta *buscarCuentaPorUsuario(string user) {
@@ -161,6 +166,11 @@ public:
     string history = fm->leerArchivo(fileName);
     cout << '\n';
   }
+  void agregarComentario(string autor, string texto) {
+    comentarios->push(autor, texto);
+    comentarios->escribirComentarios(fm);
+  }
+  void imprimirComentarios() { comentarios->imprimirPila(fm); }
 };
 
 #endif
