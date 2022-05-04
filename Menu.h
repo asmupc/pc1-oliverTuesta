@@ -74,32 +74,13 @@ public:
     return nullptr;
   }
 
-  void retirarDinero(CCuenta *cuenta) {
-    cout << "\t\tRETIROS"
-         << "\n\n";
-    float montoRetirar;
-    cuenta->imprimirSaldos();
-    int idMoneda;
-    cout << "Seleccione el tipo de moneda: ";
-    cin >> idMoneda;
-    Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), idMoneda);
-    if (saldo != nullptr) {
-      cout << "Digite el monto a retirar: ";
-      cin >> montoRetirar;
-      cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
-      controller.actualizarDatos();
-    } else {
-      cout << "No tiene dinero en esa cuenta" << '\n';
-    }
-  }
-
   void escribirComentario(CCuenta *cuenta) {
     cout << "\t\tESCRIBE UN COMENTARIO" << '\n';
     string texto;
-    // while (texto.size() < 1) {
-    // getline(cin, texto);
-    //}
-    cin >> texto;
+    while (texto.size() < 1) {
+      getline(cin, texto);
+    }
+    // cin >> texto;
     controller.agregarComentario(cuenta->getName(), texto);
     cout << "\nGracias por dejar un comentario\n" << '\n';
   }
@@ -145,7 +126,7 @@ public:
         controller.cambioDivisas(cuenta);
         break;
       case 4:
-        retirarDinero(cuenta);
+        controller.retirarDinero(cuenta);
         break;
       case 5:
         Clear();

@@ -110,6 +110,29 @@ public:
     return nullptr;
   }
 
+  void retirarDinero(CCuenta *cuenta) {
+    cout << "\t\tRETIROS"
+         << "\n\n";
+    float montoRetirar;
+    cuenta->imprimirSaldos();
+    int idMoneda;
+    cout << "Seleccione el tipo de moneda: ";
+    cin >> idMoneda;
+    Saldo *saldo = cuenta->buscarPorId(cuenta->getListaSaldos(), idMoneda);
+    if (saldo != nullptr) {
+      cout << "Digite el monto a retirar: ";
+      cin >> montoRetirar;
+      cuenta->retirarSaldo(montoRetirar, saldo->tipoMoneda);
+      actualizarDatos();
+      string operacion = "Se ha retirado " + to_string(montoRetirar) +
+                         " de la cuenta " +
+                         monedas->buscarPorId(idMoneda)->nombre;
+      fm->escribir(cuenta->getUser() + ".cs", operacion);
+    } else {
+      cout << "No tiene dinero en esa cuenta" << '\n';
+    }
+  }
+
   void cambioDivisas(CCuenta *cuenta) {
     cout << "\t\tCAMBIO DE DIVISAS"
          << "\n\n";
@@ -142,9 +165,10 @@ public:
           actualizarDatos();
           cout << "Su cambio se ha realizado correctamente" << '\n';
 
-          string operacion =
-              "Se ha cambiado" + to_string(valorInicial) + " " + monedaInicial +
-              " a " + to_string(valorConvertido) + " " + monedaNueva->nombre;
+          string operacion = "Se ha cambiado " + to_string(valorInicial) + " " +
+                             monedaInicial + " a " +
+                             to_string(valorConvertido) + " " +
+                             monedaNueva->nombre;
           fm->escribir(cuenta->getUser() + ".cs", operacion);
 
         } else {
@@ -176,9 +200,8 @@ public:
 
   void ordenarCuentas() {
     for (int i = 0; i < cuentas.size() - 1; i++) {
-      int menor;
-      for (int j = i + 1; j < cuentas.size(); j++) {
-        menor = i;
+      int menor = i;
+      for (int j = i; j < cuentas.size(); j++) {
         if (cuentas[j]->getName()[0] < cuentas[menor]->getName()[0]) {
           menor = j;
         }
