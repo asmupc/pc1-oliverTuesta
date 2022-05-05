@@ -198,7 +198,66 @@ public:
   }
   void imprimirComentarios() { comentarios->imprimirPila(fm); }
 
-  void ordenarCuentas() {
+  void merge(int l, int m, int r) {
+
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    vector<CCuenta *> cuentasLeft;
+    vector<CCuenta *> cuentasRight;
+
+    for (int i = 0; i < n1; i++) {
+      cuentasLeft.push_back(cuentas[l + i]);
+    }
+
+    for (int j = 0; j < n2; j++) {
+      cuentasRight.push_back(cuentas[m + j + 1]);
+    }
+
+    // index of vector left and right
+    int i1 = 0, i2 = 0;
+    // index of merged vector
+    int i = l;
+
+    while (i1 < n1 && i2 < n2) {
+      if (cuentasLeft[i1]->getName()[0] <= cuentasRight[i2]->getName()[0]) {
+        cuentas[i] = cuentasLeft[i1];
+        i1++;
+      } else {
+        cuentas[i] = cuentasRight[i2];
+        i2++;
+      }
+      i++;
+    }
+    // Copy the remaining elements of cuentasLeft if there are any
+    while (i1 < n1) {
+      cuentas[i] = cuentasLeft[i1];
+      i1++;
+      i++;
+    }
+
+    // Copy the remaining elements of cuentasRight if there are any
+    while (i2 < n2) {
+      cuentas[i] = cuentasRight[i2];
+      i2++;
+      i++;
+    }
+  }
+
+  void mergeSort(int l, int r) {
+
+    if (l >= r)
+      return;
+
+    int m = (l + r) / 2;
+
+    mergeSort(l, m);
+    mergeSort(m + 1, r);
+    merge(l, m, r);
+  }
+
+  void selectionSort() {
+
     for (int i = 0; i < cuentas.size() - 1; i++) {
       int menor = i;
       for (int j = i; j < cuentas.size(); j++) {
@@ -211,6 +270,11 @@ public:
       cuentas[menor] = cuentas[i];
       cuentas[i] = aux;
     }
+  }
+
+  void ordenarCuentas() {
+    // selectionSort();
+    mergeSort(0, cuentas.size() - 1);
     for (auto i : cuentas) {
       cout << i->getName() << '\n';
     }

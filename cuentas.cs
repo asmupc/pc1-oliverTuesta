@@ -1,4 +1,4 @@
-4
+5
 100
 oliver tuesta
 oliver
@@ -7,22 +7,29 @@ oliver
 PEN
 0
 101
-ana de armas
-ana
+manuel alberto
+manuel
 1234
 1
 PEN
 0
 102
-pepito cuarto
-pepi
+ana maria
+ana
 1234
 1
 PEN
 0
 103
-zara perez
+zara mara
 zara
+1234
+1
+PEN
+0
+104
+pepe tercero
+pepe
 1234
 1
 PEN
